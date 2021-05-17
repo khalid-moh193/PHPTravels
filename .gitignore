@@ -1,8 +1,8 @@
 .idea/
 .settings/
 allure-*
+allure-results/
 target/
 test-output/
 screenshots/*
-TestReport/
 *.iml
