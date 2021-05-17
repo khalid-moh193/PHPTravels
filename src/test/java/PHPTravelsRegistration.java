@@ -4,6 +4,7 @@ import Web.Util.fakeDataGeneration;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import org.apache.commons.lang.RandomStringUtils;
 import org.testng.annotations.Test;
 
 @Epic("Registration Functionality")
@@ -12,6 +13,7 @@ public class PHPTravelsRegistration extends BaseTestClass {
     HomePage home;
     RegisterPage register;
     Faker fakeData = new Faker();
+    String generatedPassword;
     //region Test Cases
     /*
         1-
@@ -28,8 +30,8 @@ public class PHPTravelsRegistration extends BaseTestClass {
                 .enterLastName(setLastName())
                 .enterPhoneNumber(setPhoneNumber())
                 .enterEmail(generateEmail())
-                .enterPassword("12345678")
-                .enterConfirmPassword("12345678");
+                .enterPassword(generatePassword())
+                .enterConfirmPassword(generatedPassword);
 
         Thread.sleep(3000);
         softAssert.assertAll();
@@ -52,5 +54,14 @@ public class PHPTravelsRegistration extends BaseTestClass {
 
     private String generateEmail(){
         return fakeData.name().firstName().concat("@").concat(fakeData.name().lastName().concat(".com"));
+    }
+
+    public String generatePassword() {
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String character = "!@#$%^&*-_=+|;:,<.>/?";
+        String numbers = "123456789";
+        generatedPassword = RandomStringUtils.random( 15, upper + character + numbers);
+        System.out.println(generatedPassword);
+        return generatedPassword;
     }
 }
