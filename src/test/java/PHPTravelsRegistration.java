@@ -5,6 +5,7 @@ import com.github.javafaker.Faker;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.apache.commons.lang.RandomStringUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @Epic("Registration Functionality")
@@ -22,23 +23,52 @@ public class PHPTravelsRegistration extends BaseTestClass {
     //endregion
 
 
-    @Test(priority = 1, description = "search by any keyword, then check that it's existed in the search result ")
-    public void verifySearchFunctionality() throws InterruptedException {
+    @Test(priority = 1, description = "open registration page and enter correct data, then check that user is logged in successfully ")
+    public void registrationFlow() {
+        String firstName = setFirstName();
+        String lastName = setLastName();
+
         register = new RegisterPage(driver);
         register.navigateToPHPTravels()
-                .enterFirstName(setFirstName())
-                .enterLastName(setLastName())
+                .enterFirstName(firstName)
+                .enterLastName(lastName)
                 .enterPhoneNumber(setPhoneNumber())
                 .enterEmail(generateEmail())
                 .enterPassword(generatePassword())
-                .enterConfirmPassword(generatedPassword);
+                .enterConfirmPassword(generatedPassword)
+                .clickSignUpButton();
 
-        Thread.sleep(3000);
+        home = new HomePage(driver);
+        doAssertEqual(home.getAccountName(), "Hi, " + firstName + " " + lastName, "account name is not displayed as expected");
+        doAssertEqual(home.getCurrentUrl().contains("account"), true, "URL is wrong, hence user is not registered successfully");
+
+        //post condition
+        home.clickOnAccountDropDownMenu()
+                .clickOnLogout();
+        softAssert.assertAll();
+
+    }
+
+    @Test(priority = 2, description = "enter different set of data {0}, {1}" ,dataProvider= "getData")
+    public void enterDifferentWrongData(String firstName, String lastName){
+        register = new RegisterPage(driver);
+        register.navigateToPHPTravels()
+                .enterFirstName(firstName)
+                .enterLastName(lastName)
+                .enterPhoneNumber(setPhoneNumber())
+                .enterEmail(generateEmail())
+                .enterPassword(generatePassword())
+                .enterConfirmPassword(generatedPassword)
+                .clickSignUpButton();
+
+        home = new HomePage(driver);
+        doAssertEqual(home.getCurrentUrl().contains("register"), true, "URL is wrong, hence user is not registered successfully");
         softAssert.assertAll();
     }
 
 
 
+    /*************** supportive functions ******************/
 
     private String setFirstName(){
         return fakeData.name().firstName();
@@ -53,7 +83,7 @@ public class PHPTravelsRegistration extends BaseTestClass {
     }
 
     private String generateEmail(){
-        return fakeData.name().firstName().concat("@").concat(fakeData.name().lastName().concat(".com"));
+        return setFirstName().concat(setLastName()).concat("@gmail.com");
     }
 
     public String generatePassword() {
@@ -64,4 +94,18 @@ public class PHPTravelsRegistration extends BaseTestClass {
         System.out.println(generatedPassword);
         return generatedPassword;
     }
+
+    @DataProvider
+    public Object[][] getData(){
+        //1st combination: T First Name, T Last Name
+        //2nd combination: T First Name, f Last Name
+        //3rd combination: f First Name, f Last Name
+        Object [][] data = new Object[3][2];
+        //[no. of combinations] [no. of values -First Name and Last Name-]
+        data[0][0] = "Abc"; data[0][1] = "";
+        data[1][0] = "   "; data[1][1] = "Abc";
+        data[2][0] = "khalid"; data[2][1] = "محمد";
+        return data;
+    }
+
 }
