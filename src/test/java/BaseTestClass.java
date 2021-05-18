@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
@@ -12,7 +13,7 @@ public abstract class BaseTestClass {
     public SoftAssert softAssert;
 
     @Attachment(value = "{0}", type = "text/plain")
-    public static String Save_TestLog(String message) {
+    public static String saveTestLog(String message) {
         return message;
     }
 
@@ -34,16 +35,16 @@ public abstract class BaseTestClass {
     }
 
     @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] Save_screenshotPNG() {
+    public byte[] saveScreenshotPNG() {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
     @Step("check that value : {0} equal to : {1} ")
-    boolean DoAssert_equal(Object Actual, Object Expected, String message) {
+    boolean doAssertEqual(Object Actual, Object Expected, String message) {
         softAssert.assertEquals(Actual, Expected, message);
         if (String.valueOf(Expected) != String.valueOf(Actual)) {
-            Save_screenshotPNG();
-            Save_TestLog(message);
+            saveScreenshotPNG();
+            saveTestLog(message);
             return false;
         }
 

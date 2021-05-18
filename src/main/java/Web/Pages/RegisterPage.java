@@ -13,7 +13,7 @@ public class RegisterPage extends Page {
     public By emailField = By.name("email");
     public By passwordField = By.name("password");
     public By confirmPasswordField = By.name("confirmpassword");
-    public By signupButton = By.className("signupbtn btn_full btn btn-success btn-block btn-lg");
+    public By signupButton = By.cssSelector("button[class='signupbtn btn_full btn btn-success btn-block btn-lg']");
 
 
 
