@@ -9,11 +9,11 @@
             </class>
         </classes>
     </test>
-<!--    <test name="FirefoxTest">-->
-<!--        <parameter name="browser" value="firefox" />-->
-<!--        <classes>-->
-<!--            <class name="PHPTravelsRegistration">-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="FirefoxTest">
+        <parameter name="browser" value="firefox" />
+        <classes>
+            <class name="PHPTravelsRegistration">
+            </class>
+        </classes>
+    </test>
 </suite>
