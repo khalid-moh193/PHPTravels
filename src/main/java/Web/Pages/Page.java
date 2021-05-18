@@ -65,6 +65,14 @@ public class Page {
         return driver.getCurrentUrl();
     }
 
+    protected String getElementText(By element) {
+        return wait.until(ExpectedConditions.elementToBeClickable(element)).getText();
+    }
+
+    protected String getElementAttribute(By element, String attribute) {
+        return driver.findElement(element).getAttribute(attribute);
+    }
+
     @Step("-get Page Title")
     public String getPageTitle() {
         return driver.getTitle();
