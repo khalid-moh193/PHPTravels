@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class RegisterPage extends Page {
-    public By firstNameField1 = By.xpath("//span[normalize-space()='First Name']");
     public By firstNameField = By.name("firstname");
     public By lastNameField = By.name("lastname");
     public By phoneNumberField = By.name("phone");
@@ -14,6 +13,7 @@ public class RegisterPage extends Page {
     public By passwordField = By.name("password");
     public By confirmPasswordField = By.name("confirmpassword");
     public By signupButton = By.cssSelector("button[class='signupbtn btn_full btn btn-success btn-block btn-lg']");
+    public By errorMessage = By.xpath("//p[normalize-space()='The First name field is required.']");
 
 
 
